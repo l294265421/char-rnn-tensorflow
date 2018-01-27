@@ -6,10 +6,11 @@ import numpy as np
 
 
 class TextLoader():
-    def __init__(self, data_dir, batch_size, seq_length, encoding='utf-8'):
+    def __init__(self, data_dir, batch_size, seq_length, word_rnn, encoding='utf-8'):
         self.data_dir = data_dir
         self.batch_size = batch_size
         self.seq_length = seq_length
+        self.word_rnn = word_rnn
         self.encoding = encoding
 
         input_file = os.path.join(data_dir, "input.txt")
@@ -28,7 +29,7 @@ class TextLoader():
     def preprocess(self, input_file, vocab_file, tensor_file):
         with codecs.open(input_file, "r", encoding=self.encoding) as f:
             data = f.read()
-        counter = collections.Counter(data)
+        counter = collections.Counter(data if not self.word_rnn else data.split())
         count_pairs = sorted(counter.items(), key=lambda x: -x[1])
         self.chars, _ = zip(*count_pairs)
         self.vocab_size = len(self.chars)

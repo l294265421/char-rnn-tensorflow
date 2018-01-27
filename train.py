@@ -29,7 +29,7 @@ def main():
                         help='minibatch size')
     parser.add_argument('--seq_length', type=int, default=50,
                         help='RNN sequence length')
-    parser.add_argument('--num_epochs', type=int, default=50,
+    parser.add_argument('--num_epochs', type=int, default=5,
                         help='number of epochs')
     parser.add_argument('--save_every', type=int, default=1000,
                         help='save frequency')
@@ -51,12 +51,14 @@ def main():
                                                   Note: this file contains absolute paths, be careful when moving files around;
                             'model.ckpt-*'      : file(s) with model definition (created by tf)
                         """)
+    parser.add_argument('--word_rnn', type=bool, default=False,
+                        help='是否每次生成一个词，如果支持，通过空白分隔词')
     args = parser.parse_args()
     train(args)
 
 
 def train(args):
-    data_loader = TextLoader(args.data_dir, args.batch_size, args.seq_length)
+    data_loader = TextLoader(args.data_dir, args.batch_size, args.seq_length, args.word_rnn)
     args.vocab_size = data_loader.vocab_size
 
     # check compatibility if training is continued from previously saved model

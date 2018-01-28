@@ -14,7 +14,7 @@ def main():
     parser = argparse.ArgumentParser(
                         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--data_dir', type=str, default='data/tinyshakespeare',
-                        help='data directory containing input.txt')
+                        help='data directory containing input_origional.txt')
     parser.add_argument('--save_dir', type=str, default='save',
                         help='directory to store checkpointed models')
     parser.add_argument('--log_dir', type=str, default='logs',
@@ -29,7 +29,7 @@ def main():
                         help='minibatch size')
     parser.add_argument('--seq_length', type=int, default=50,
                         help='RNN sequence length')
-    parser.add_argument('--num_epochs', type=int, default=5,
+    parser.add_argument('--num_epochs', type=int, default=3,
                         help='number of epochs')
     parser.add_argument('--save_every', type=int, default=1000,
                         help='save frequency')

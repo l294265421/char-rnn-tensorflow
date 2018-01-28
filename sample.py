@@ -15,9 +15,9 @@ def main():
                        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--save_dir', type=str, default='save',
                         help='model directory to store checkpointed models')
-    parser.add_argument('-n', type=int, default=50,
+    parser.add_argument('-n', type=int, default=5,
                         help='number of characters to sample')
-    parser.add_argument('--prime', type=text_type, default=u'are all',
+    parser.add_argument('--prime', type=text_type, default=u'0.0 0.0 0.0 2887.0 2711.0 8399.0 7869.0 6630.0 7454.0 2357.0 2315.0 1541.0 4547.0 4426.0 6441.0 7061.0 5322.0 1572.0 571.0 0.0',
                         help='prime text')
     parser.add_argument('--sample', type=int, default=1,
                         help='0 to use max at each timestep, 1 to sample at '

@@ -15,15 +15,17 @@ def main():
                        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--save_dir', type=str, default='save',
                         help='model directory to store checkpointed models')
-    parser.add_argument('-n', type=int, default=500,
+    parser.add_argument('-n', type=int, default=50,
                         help='number of characters to sample')
-    parser.add_argument('--prime', type=text_type, default=u' ',
+    parser.add_argument('--prime', type=text_type, default=u'are all',
                         help='prime text')
     parser.add_argument('--sample', type=int, default=1,
                         help='0 to use max at each timestep, 1 to sample at '
                              'each timestep, 2 to sample on spaces')
-    parser.add_argument('--word_rnn', type=bool, default=False,
-                        help='是否每次生成一个词，如果支持，通过空白分隔词')
+    parser.add_argument('--word_rnn', type=bool, default=True,
+                        help='是否每次生成一个词')
+    parser.add_argument('--seperator', type=str, default=None,
+                        help='词分隔符, 默认通过空白分隔')
     args = parser.parse_args()
     sample(args)
 
@@ -40,8 +42,17 @@ def sample(args):
         ckpt = tf.train.get_checkpoint_state(args.save_dir)
         if ckpt and ckpt.model_checkpoint_path:
             saver.restore(sess, ckpt.model_checkpoint_path)
-            print(model.sample(sess, chars, vocab, args.n, args.prime if not args.word_nn else args.prime.split(),
-                               args.sample).encode('utf-8').decode())
+            if args.word_rnn:
+                if not args.seperator:
+                    args.prime = args.prime.split()
+                else:
+                    args.prime = args.prime.split(args.prime.seperator)
+            result = model.sample(sess, chars, vocab, args.n, args.prime,
+                               args.sample, args.word_rnn)
+            if args.word_rnn:
+                print(' '.join(result))
+            else:
+                print(result.encode('utf-8').decode())
 
 if __name__ == '__main__':
     main()

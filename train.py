@@ -51,14 +51,16 @@ def main():
                                                   Note: this file contains absolute paths, be careful when moving files around;
                             'model.ckpt-*'      : file(s) with model definition (created by tf)
                         """)
-    parser.add_argument('--word_rnn', type=bool, default=False,
-                        help='是否每次生成一个词，如果支持，通过空白分隔词')
+    parser.add_argument('--word_rnn', type=bool, default=True,
+                        help='是否每次生成一个词')
+    parser.add_argument('--seperator', type=str, default=None,
+                        help='词分隔符, 默认通过空白分隔')
     args = parser.parse_args()
     train(args)
 
 
 def train(args):
-    data_loader = TextLoader(args.data_dir, args.batch_size, args.seq_length, args.word_rnn)
+    data_loader = TextLoader(args.data_dir, args.batch_size, args.seq_length, args.word_rnn, args.seperator)
     args.vocab_size = data_loader.vocab_size
 
     # check compatibility if training is continued from previously saved model

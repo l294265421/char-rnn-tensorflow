@@ -86,7 +86,7 @@ class Model():
         tf.summary.histogram('loss', loss)
         tf.summary.scalar('train_loss', self.cost)
 
-    def sample(self, sess, chars, vocab, num=200, prime='The ', sampling_type=1):
+    def sample(self, sess, chars, vocab, num=200, prime='The ', sampling_type=1, word_rnn = False):
         state = sess.run(self.cell.zero_state(1, tf.float32))
         for char in prime[:-1]:
             x = np.zeros((1, 1))
@@ -119,6 +119,9 @@ class Model():
                 sample = weighted_pick(p)
 
             pred = chars[sample]
-            ret += pred
+            if word_rnn:
+                ret.append(pred)
+            else:
+                ret += pred
             char = pred
         return ret

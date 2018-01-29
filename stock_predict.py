@@ -9,8 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
+save_dir = r'save/num_rnn/'
 #——————————————————导入数据——————————————————————
-f=open('stock_dataset.csv')  
+f=open('dataset/dataset_1.csv', encoding='utf-8')
 df=pd.read_csv(f)     #读入股票数据
 data=np.array(df['最高价'])   #获取最高价序列
 data=data[::-1]      #反转，使数据按照日期先后顺序排列
@@ -94,11 +95,11 @@ def train_lstm():
                 #每10步保存一次参数
                 if step%10==0:
                     print(i,step,loss_)
-                    print("保存模型：",saver.save(sess,'stock.model'))
+                    print("保存模型：",saver.save(sess, save_dir + 'stock.model'))
                 step+=1
 
 
-train_lstm()
+# train_lstm()
 
 
 #————————————————预测模型————————————————————
@@ -107,7 +108,7 @@ def prediction():
     saver=tf.train.Saver(tf.global_variables())
     with tf.Session() as sess:
         #参数恢复
-        module_file = tf.train.latest_checkpoint(base_path+'module2/')
+        module_file = tf.train.latest_checkpoint(save_dir)
         saver.restore(sess, module_file) 
 
         #取训练集最后一行为测试样本。shape=[1,time_step,input_size]

@@ -84,7 +84,7 @@ def train_lstm():
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         #重复训练10000次
-        for i in range(10000):
+        for i in range(2):
             step=0
             start=0
             end=start+batch_size
